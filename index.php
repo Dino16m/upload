@@ -9,7 +9,10 @@
     
     <button v-on:click="addfiles()">addfiles</button> <hr>
      <div class="display">
-       <div v-for="(file, key) in files">{{file.name}} <span class="remove" v-on:click="remove(key)"> remove</span> </div>
+       <div v-for="(file, key) in files">{{file.name}}
+      HD: <input type="radio" name='quality' v-model='quality' value='HD'><br>
+      NOT HD: <input type="radio" name='quality' v-model='quality' value='nHD'><br>
+       <span class="remove" v-on:click="remove(key)"> remove</span> </div>
      </div>
       <div class="status">{{status}}</div>
     </div>
@@ -22,7 +25,9 @@
       data(){
         return{
           files: [],
-          status: ''
+          status: '',
+          emptyfile: [],
+          quality:[]
         }
       },
       methods: {
@@ -38,14 +43,15 @@
           let formData = new FormData();
           for(var i=0; i<this.files.length; i++){
             let file = this.files[i];
-            formData.append('files['+ i + ']',JSON.stringify( file));
+            formData.append('files['+ i + ']',file);
           }
             axios.post('uploader.php', formData,{
               headers:{ 'Content-Type': 'multipart/form-data'}
             }).then(function(response){
-              console.log(response), this.files='' }
+              console.log(response);
+              this.files = this.emptyfile; }
             ).catch(function(){
-              this.status= 'unfortunately not uploaded'
+              this.status= 'unfortunately not uploaded';
             });
           
         },
