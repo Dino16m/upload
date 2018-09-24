@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+  	<script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript" src="axios.js"></script>
 <title></title>
   <body>
     <div id="app">
@@ -16,8 +18,7 @@
      </div>
       <div class="status">{{status}}</div>
     </div>
-    <script type="text/javascript" src="vue.js"></script>
-    <script type="text/javascript" src="axios.js"></script>
+    
     <script>
     Vue.use(axios);
     new Vue({
