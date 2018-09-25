@@ -21,7 +21,7 @@ for ($i=0; $i<$inputSize; $i++){
   array_push( $uploads, $fileArr);
 }
 $status =upload($uploads, $conn);
-echo json_encode($status);
+echo json_encode(var_dump($_POST));
 
 function upload($uploads,$conn){
   $errors = array();
