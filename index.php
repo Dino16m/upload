@@ -13,8 +13,8 @@
     <button v-on:click="addfiles()">addfiles</button> <hr>
      <div class="display">
        <div v-for="(file, key) in files">{{file.name}}
-      HD: <input type="radio" v-bind:name='name' v-on:click="handleQuality(file.name)"  v-model='quality' value='HD'><br>
-      NOT HD: <input type="radio" v-bind:name='name' v-model='quality' v-on:click="handleQuality(file.name)" value='nHD'><br>
+      HD: <input type="radio" v-bind:name='name' v-on: change="handleQuality(file.name)"  v-model='quality' value='HD'><br>
+      NOT HD: <input type="radio" v-bind:name='name' v-model='quality' v-on: change="handleQuality(file.name)" value='nHD'><br>	
       Quality: {{qualitiez(file.name)}}
        <span class="remove" v-on:click="remove(key, file.name)"> remove</span> </div>
      </div>
@@ -97,7 +97,6 @@
         addfiles(){
           this.$refs.files.click();
           this.name= this.name + '1';
-          this.quality='';
         }
       }
     })
