@@ -16,12 +16,13 @@ for ($i=0; $i<$inputSize; $i++){
   $error =$_FILES['files']['error'][$i];
   $filetype= $_FILES['files']['type'][$i];
   $filesize =$_FILES['files']['size'][$i];
-  $fileQuality= $_POST[$filename.'_quality'];
+  $filenameQuality=preg_replace('/\./','_', $filename);
+  $fileQuality= $_POST[$filenameQuality.'_quality'];
   $fileArr= ["name"=>$filename, "file"=>$file,"quality"=>strtolower($fileQuality), "error"=> $error, "filetype"=>$filetype, "size"=>$filesize];
   array_push( $uploads, $fileArr);
 }
 $status =upload($uploads, $conn);
-echo json_encode(var_dump($_POST));
+echo json_encode($status);
 
 function upload($uploads,$conn){
   $errors = array();
@@ -33,24 +34,24 @@ function upload($uploads,$conn){
        $error=nonHdUpload($upload, $conn);
     }
     array_push($errors, $error);
-    return $errors;
   }
+  return $errors;
 }
 function hdUpload($upload, $conn){
   $file = $upload["file"];
   $filename=$upload["name"];
   $filetype = $upload['filetype'];
   $filesize=$upload['size'];
-  $dir = root_dir.'/upload/uploads/NHD'. $filename;
+  $dir = root_dir.'/upload/uploads/HD/'. $filename;
   if($filesize<1 || $filename ==null || $filetype ==null){
-    return 'their was an error uploading one of your files, check the files and try again';
+    return 'there was an error uploading one of your files, check the files and try again';
   }
-  if(move_uploaded_file($theFile, $dir)){
+  if(move_uploaded_file($file, $dir)){
     $error = SQLinsert($conn, $filename, 1, 0, $filetype);
      return $error ? 'file '.$filename.' uploaded successfully':'file '.$filename.' not uploaded successfully';
   }
   else{
-    return 'their was an error uploading one of your files '.$filename.', please try again later or contact the admin';
+    return 'there was an error uploading one of your files '.$filename.', please try again later or contact the admin';
  }
 }
 function nonHdUpload($upload, $conn){

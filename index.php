@@ -4,21 +4,36 @@
   <head>
   	<script type="text/javascript" src="vue.js"></script>
     <script type="text/javascript" src="axios.js"></script>
+    <script type="text/javascript" src="jquery.js"></script>
+    <link href="bootstrap.css" rel="stylesheet">
+  	<script type="text/javascript" src="bootstrap.min.js"></script>
+
 <title></title>
   <body>
-    <div id="app">
+    <div id="app" class="container w-100 text-center">
     <input type="file" id="files" ref="files" multiple v-on:change="handleFileUpload()">
-    <button v-on:click=submit()> Submit <button>
-      
-    <button v-on:click="addfiles()">addfiles</button> <hr>
-     <div class="display">
-       <div v-for="(file, key) in files">{{file.name}}
-      HD: <input type="radio" v-bind:name='name' v-on:click="handleQuality(file.name)"  v-model='quality' value='HD'><br>
-      NOT HD: <input type="radio" v-bind:name='name' v-model='quality' v-on:click="handleQuality(file.name)" value='nHD'><br>
-      Quality: {{qualitiez(file.name)}}
-       <span class="remove" v-on:click="remove(key, file.name)"> remove</span> </div>
+
+    
+     <div class=" d-flex justify-content-md-center flex-wrap flex-row w-100  rounded primary bg-secondary">
+       <div class="border border-secondary" v-for="(file, key) in files">
+         <div class="row align-self-center ">
+              <span class='p-2 flex-fill bg-primary'>{{file.name}}</span><button class=" btn btn-danger" v-on:click="remove(key, file.name)"> remove</button><br>
+             <label class=" p-2 flex-fill badge badge-secondary">HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='HD'>
+            <label class="p-2badge flex-fill badge-secondary">Not HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='nHD'><br>
+            <label class="p-2 badge flex-fill badge-primary">the quality is:{{quality[key]}}</label><br>
+      </div>
+          <span class="d-block bg-secondary badge badge-primary flex-row">-------</span>
+        </div>
      </div>
-      <div class="status">{{status}}</div>
+     
+     <div class="d-flex justify-content-md-center ">
+    <button class="d-flex flex-md-column bg-light w-40" v-on:click=submit()> Submit <button>
+    <button class="d-flex flex-md-column bg-light w-40" v-on:click="addfiles()">addfiles</button>
+    </div>
+    <div class="progress bg-success ">
+       <div class="progress-bar progress-bar-striped text-center" role="progressbar" v-bind:style="{width: width}" v-bind:aria-valuenow="uploadValue" aria-valuemin="0" aria-valuemax="100"> {{width}}</div>
+    </div>
+      <div class="badge badge-success">{{status}}</div>
     </div>
     
     <script>
@@ -28,11 +43,13 @@
       data(){
         return{
           files: [],
-          status: '',
+          status: 'we are yet to recive an update',
           emptyfile: [],
-          quality:'',
+          quality:[],
           qualities:[],
-          name:'0'
+          name:[],
+          width: '1%',
+          uploadValue:0
   
         }
       },
@@ -50,16 +67,7 @@
 	            this.qualities.splice(i,1);
 	          }
         }},
-        qualitiez(name){
-          for(var i = 0; i<this.qualities.length; i++){
-	          let iteration = this.qualities[i];
-	          if (name==iteration.name){
-	            return iteration.quality;
-	          }
-	          return "no quality for this one";
-          }
-        },
-        handleQuality(name){
+        handleQuality(name, key){
           for(var i = 0; i<this.qualities.length; i++){
 	          let iteration = this.qualities[i];
 	          if( name==iteration.name){
@@ -67,9 +75,10 @@
 	            break;
 	          }
 	        }
-          let qualityObject = {'name': name, 'quality':this.quality};
+	        let quality = this.quality;
+          let qualityObject = {'name': name.replace(/\./g,'_'), 'quality':quality[key]};
           this.qualities.push(qualityObject);
-          this.quality='';
+          console.log(this.qualities)
 	      },
 	
         submit(){
@@ -78,26 +87,33 @@
             let file = this.files[i];
             let quality = this.qualities[i];
             let finalName = quality.name+'_quality';
-            finalName.replace(/ /g, '');
             let finalQuality =quality.quality;
             formData.append('files['+ i + ']',file);
             formData.append(finalName, finalQuality);
             console.log(finalQuality+' POWER');
           }
             axios.post('uploader.php', formData,{
-              headers:{ 'Content-Type': 'multipart/form-data'}
+              headers:{ 'Content-Type': 'multipart/form-data'} ,
+                onUploadProgress: function(progressEvent){
+                  this.uploadValue=parseInt(Math.round((progressEvent.loaded*100)/progressEvent.total));
+                  let value=this.uploadValue;
+                  console.log(value+'me');
+                  this.width= (value.toString()+'%');
+                }.bind(this)
+              
             }).then(function(response){
-              console.log(response);
-              this.files = []; }
+              this.status=response.data;
+              }.bind(this)
             ).catch(function(){
               this.status= 'unfortunately not uploaded';
-            });
+            }.bind(this));
           
         },
         addfiles(){
           this.$refs.files.click();
-          this.name= this.name + '1';
-          this.quality='';
+          for(var i = 0; i<this.files.length; i++){
+            this.name[i]=i;
+          }
         }
       }
     })
