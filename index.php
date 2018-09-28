@@ -24,7 +24,6 @@
       </div>
           <span class="d-block bg-secondary badge badge-primary flex-row">-------</span>
         </div>
-     </div>
      
      <div class="d-flex justify-content-md-center ">
     <button class="d-flex flex-md-column bg-light w-40" v-on:click=submit()> Submit <button>
