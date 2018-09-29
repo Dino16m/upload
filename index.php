@@ -14,17 +14,17 @@
     <input type="file" id="files" ref="files" multiple v-on:change="handleFileUpload()">
 
     
-     <div class=" d-flex justify-content-md-center flex-wrap flex-row w-100  rounded primary bg-secondary">
-       <div class="border border-secondary" v-for="(file, key) in files">
-         <div class="row align-self-center ">
-              <span class='p-2 flex-fill bg-primary'>{{file.name}}</span><button class=" btn btn-danger" v-on:click="remove(key, file.name)"> remove</button><br>
-             <label class=" p-2 flex-fill badge badge-secondary">HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='HD'>
-            <label class="p-2badge flex-fill badge-secondary">Not HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='nHD'><br>
-            <label class="p-2 badge flex-fill badge-primary">the quality is:{{quality[key]}}</label><br>
-      </div>
+     <div class="d-flex justify-content-md-center flex-column flex-fill w-100  rounded  bg-secondary">
+       <div class="border border-primary p-2" v-for="(file, key) in files">
+         <div class="align-self-center flex-row flex-fill">
+             <span class='p-2  bg-primary'>{{file.name}}</span> <button class=" btn btn-danger" v-on:click="remove(key, file.name)"> remove</button><br>
+            <label class="p-2  badge badge-secondary ">HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='HD'>
+            <label class="p-2  badge badge-secondary ">Not HD</label> <input type="radio" v-bind:name='name[key]'  v-on:change="handleQuality(file.name, key)"  v-model='quality[key]' value='nHD'><br>
+            <label class="p-2  badge badge-primary ">the quality is:{{quality[key]}}</label>
+        </div>
           <span class="d-block bg-secondary badge badge-primary flex-row">-------</span>
         </div>
-     
+     </div>
      <div class="d-flex justify-content-md-center ">
     <button class="d-flex flex-md-column bg-light w-40" v-on:click=submit()> Submit <button>
     <button class="d-flex flex-md-column bg-light w-40" v-on:click="addfiles()">addfiles</button>
@@ -33,7 +33,7 @@
        <div class="progress-bar progress-bar-striped text-center" role="progressbar" v-bind:style="{width: width}" v-bind:aria-valuenow="uploadValue" aria-valuemin="0" aria-valuemax="100"> {{width}}</div>
     </div>
       <div class="badge badge-success">{{status}}</div>
-    </div>
+    
     </div>
     <script>
     Vue.use(axios);
