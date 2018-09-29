@@ -34,7 +34,7 @@
     </div>
       <div class="badge badge-success">{{status}}</div>
     </div>
-    
+    </div>
     <script>
     Vue.use(axios);
     new Vue({
@@ -101,6 +101,7 @@
                 }.bind(this)
               
             }).then(function(response){
+              this.files='';
               this.status=response.data;
               }.bind(this)
             ).catch(function(){
