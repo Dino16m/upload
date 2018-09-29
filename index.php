@@ -101,7 +101,9 @@
                 }.bind(this)
               
             }).then(function(response){
-              this.files='';
+              this.files=[];
+              this.width='1%';
+              this.uploadValue=0;
               this.status=response.data;
               }.bind(this)
             ).catch(function(){
