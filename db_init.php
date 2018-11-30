@@ -2,9 +2,9 @@
 require_once('db_config.php');
 try{
  $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
- $sql = "INSERT INTO videos (Name, HD, nHD, ext) VALUES( 'inie', 'HD', 'nHD', 'ext')";
+ $sql = "INSERT INTO VIDEOS (id,Name, HD, nHD, ext) VALUES(1,'inie', 'HD', 'nHD', 'ext')";
  $insert = $conn->exec($sql);
- echo 'connected<br>';
+ echo 'connected<br>'.$insert;
 }
 catch (PDOException $e){
   die("couldnt connect to database<br>".$e->getMessage());
@@ -15,7 +15,7 @@ $createTable= $conn->exec($createTableQuery);
 }catch (PDOException $e){
   die("couldn't add the table".$e->getMessage());
 }
-$conn=null;
+$conn = null;
 echo 'database created';
 
 ?>
