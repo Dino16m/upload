@@ -1,6 +1,6 @@
 <?php
 require_once('db_config.php');
-define('root_dir', $_SERVER['DOCUMENT_ROOT']);
+define('root_dir', '/var/www/html/upload/');
 define('hd', 'hd');
 try{
  $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
@@ -42,7 +42,7 @@ function hdUpload($upload, $conn){
   $filename=$upload["name"];
   $filetype = $upload['filetype'];
   $filesize=$upload['size'];
-  $dir = root_dir.'/upload/uploads/HD/'. $filename;
+  $dir = root_dir.'uploads/HD/'. $filename;
   if($filesize<1 || $filename ==null || $filetype ==null){
     return 'there was an error uploading one of your files, check the files and try again';
   }
@@ -59,7 +59,7 @@ function nonHdUpload($upload, $conn){
   $filename=$upload["name"];
   $filetype = $upload['filetype'];
   $filesize=$upload['size'];
-  $dir = root_dir.'/upload/uploads/NHD'.'/'. $filename;
+  $dir = root_dir.'uploads/NHD'.'/'. $filename;
    if($filesize<1 || $filename ==null || $filetype ==null){
     return 'their was an error uploading one of your files, check the files and try again';
   }
@@ -72,7 +72,7 @@ function nonHdUpload($upload, $conn){
  }
 }
 function SQLinsert ($conn, $Name, $HD, $nHD, $ext) {
-  $sql ='INSERT INTO videos (Name, HD, nHD, ext) VALUES("'.$Name.'","'.$HD.'","'.$nHD.'","'.$ext.'")';
+  $sql ='INSERT INTO VIDEOS (Name, HD, nHD, ext) VALUES("'.$Name.'","'.$HD.'","'.$nHD.'","'.$ext.'")';
   $insert = $conn->exec($sql);
   if($insert>0){
     return true;
