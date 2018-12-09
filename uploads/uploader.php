@@ -1,6 +1,10 @@
 <?php
 require_once('db_config.php');
+<<<<<<< HEAD
 define('root_dir', '/var/www/html/upload/');
+=======
+define('root_dir', '/var/www/html/wp-content/upload/');
+>>>>>>> 2fd46f7666bf32defbab2975aac850fa99f54115
 define('hd', 'hd');
 try{
  $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbusername, $dbpassword);
@@ -59,7 +63,11 @@ function nonHdUpload($upload, $conn){
   $filename=$upload["name"];
   $filetype = $upload['filetype'];
   $filesize=$upload['size'];
+<<<<<<< HEAD
   $dir = root_dir.'uploads/NHD'.'/'. $filename;
+=======
+  $dir = root_dir.'/uploads/NHD'.'/'. $filename;
+>>>>>>> 2fd46f7666bf32defbab2975aac850fa99f54115
    if($filesize<1 || $filename ==null || $filetype ==null){
     return 'their was an error uploading one of your files, check the files and try again';
   }
